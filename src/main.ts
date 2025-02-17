@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { CustomLogger, envs, logLevels } from './global';
+import { AllExceptionsFilter, CustomLogger, envs, logLevels } from './global';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -8,6 +8,8 @@ async function bootstrap() {
   const customLogger = new CustomLogger('Main');
 
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   app.useGlobalPipes(new ValidationPipe(
     {
@@ -24,7 +26,9 @@ async function bootstrap() {
 
   await app.listen(envs.port);
 
-  customLogger.generateLog(`Server running on port ${envs.port}`, 'bootstrap', logLevels.LOG);
+  customLogger.setContext('Bootstrap');
+  customLogger.setLevel(logLevels.LOG);
+  customLogger.generateLog(`Server running on port ${envs.port}`);
 
 }
 

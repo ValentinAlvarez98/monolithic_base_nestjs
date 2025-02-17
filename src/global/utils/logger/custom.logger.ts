@@ -1,34 +1,58 @@
-import { Logger } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { logLevels } from "../../enums/log.enum";
+import { CustomLoggerInterface } from "./interfaces/custom.logger.interface";
 
 
-export class CustomLogger extends Logger {
+@Injectable()
+export class CustomLogger extends Logger implements CustomLoggerInterface {
 
       private name: string;
+      private timestamp: string;
+      private level: logLevels = logLevels.ERROR;
+      protected context: string = "Unknown";
+      
 
       constructor(name: string) {
 
             super(name);
 
+            this.timestamp = new Date().toLocaleDateString();
+
+      }
+
+      private setTimeStamp() {
+            
+            this.timestamp = new Date().toLocaleDateString();
+
+      }
+
+      setName(name: string) {
+
             this.name = name;
 
-      }
-
-      generateLog(message: string, method: string, level?: logLevels): void {
-
-            const log = `${message} in ${this.name} - ${method}`;
-
-            const logLevel = level ? level : logLevels.ERROR;
-
-            this[logLevel](log);
+            Logger.overrideLogger(this);
 
       }
 
-      generateValidationsLog(message: string, service: string, method: string, level?: logLevels) : void {
+      setContext(context: string) {
 
-            const log = `${message} in ${service} - ${method}`;
+            this.context = context;
 
-            const logLevel = level ? level : logLevels.WARN;
+      }
+
+      setLevel(level: logLevels) {
+
+            this.level = level;
+
+      }
+
+      generateLog(message: string): void {
+
+            this.setTimeStamp();
+
+            const log = `${this.timestamp} - ${message} in ${this.context}`;
+
+            const logLevel = logLevels[this.level].toLowerCase();
 
             this[logLevel](log);
 
