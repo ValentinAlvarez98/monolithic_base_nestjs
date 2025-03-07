@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AllExceptionsFilter, CustomLogger, envs, logLevels } from './global';
+import { AllExceptionsFilter, CustomLogger, envs, logLevels } from './common';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
@@ -11,17 +11,13 @@ async function bootstrap() {
 
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  app.useGlobalPipes(new ValidationPipe(
-    {
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-      transformOptions: {
-        enableImplicitConversion: true
-      }
-    }
-  ))
-
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transform: true,
+    transformOptions: { enableImplicitConversion: true }
+  }));
+  
   app.setGlobalPrefix('api');
 
   await app.listen(envs.port);
