@@ -17,7 +17,9 @@ export class CustomExceptionStrategy implements ExceptionStrategy<CustomError> {
             const url = request.url;
             const status = exception.status;
             const message = exception.message;
-            const timestamp = new Date().toLocaleDateString();
+            const date = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString();
+            const timestamp = `${date} ${time}`;
 
             if (status >= 500) {
 

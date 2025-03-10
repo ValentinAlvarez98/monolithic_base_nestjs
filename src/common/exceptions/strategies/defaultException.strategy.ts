@@ -14,7 +14,9 @@ export class DefaultExceptionStrategy implements ExceptionStrategy<unknown> {
             const url = request.url;
             const status = 500;
             const message = 'Internal Server Error';
-            const timestamp = new Date().toLocaleDateString();
+            const date = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString();
+            const timestamp = `${date} ${time}`;
 
             this.logger.setLevel(logLevels.FATAL);
             this.logger.setContext(context);

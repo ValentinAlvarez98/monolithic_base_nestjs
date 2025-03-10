@@ -20,7 +20,9 @@ export class HttpExceptionStrategy implements ExceptionStrategy<HttpException> {
             const url = request.url;
             const status = exception.getStatus();
             const message = typeof exception.getResponse() === 'object' ? exception.getResponse()['message'] : exception.getResponse();
-            const timestamp = new Date().toLocaleDateString();
+            const date = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString();
+            const timestamp = `${date} ${time}`;
 
             if (status >= 500) {
 

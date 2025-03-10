@@ -47,6 +47,9 @@ lerna-debug.log*
 .temp
 .tmp
 
+# Old
+./OLD-README.md
+
 # Runtime data
 pids
 *.pid

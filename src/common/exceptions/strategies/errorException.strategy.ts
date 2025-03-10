@@ -14,7 +14,9 @@ export class ErrorExceptionStrategy implements ExceptionStrategy<Error> {
             const url = request.url;
             const status = 500;
             const message = exception.message;
-            const timestamp = new Date().toLocaleDateString();
+            const date = new Date().toLocaleDateString();
+            const time = new Date().toLocaleTimeString();
+            const timestamp = `${date} ${time}`;
 
             this.logger.setLevel(logLevels.FATAL);
             this.logger.setContext(context);
